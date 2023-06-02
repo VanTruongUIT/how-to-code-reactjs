@@ -1,46 +1,19 @@
 import React from "react";
 import PropTypes from "prop-types";
+import Card from "../Card/Card.js";
+import AnimalDetails from "../AnimalDetails/AnimalDetails.js";
 
-import "./AnimalCard.css";
-
-export default function AnimalCard({
-  additional,
-  diet,
-  name,
-  scientificName,
-  size,
-  showAdditional,
-}) {
+export default function AnimalCard({ size, name, ...props }) {
   return (
-    <div className="animal-wrapper">
-      <h2>{name}</h2>
-      <h3>{scientificName}</h3>
-      <h4>{size}kg</h4>
-      <div>{diet.join(", ")}</div>
-      <button onClick={() => showAdditional(additional)}>More Info</button>
-    </div>
+    <Card title="Animal" details={<AnimalDetails {...props} />}>
+      <h3>{name}</h3>
+      <div>{size}kg</div>
+    </Card>
   );
 }
 
 AnimalCard.propTypes = {
-  additional: PropTypes.shape({
-    link: PropTypes.string,
-    notes: PropTypes.string,
-  }),
   diet: PropTypes.arrayOf(PropTypes.string).isRequired,
   name: PropTypes.string.isRequired,
-  scientificName: PropTypes.string.isRequired,
-  showAdditional: PropTypes.func.isRequired,
-  /*
-    If you want to mix types, you can use another prop called oneOfType 
-    size: PropTypes.oneOfType([PropTypes.number, PropTypes.string]) 
-
-  */
   size: PropTypes.number.isRequired,
-};
-
-AnimalCard.defaultProps = {
-  additional: {
-    notes: "No Additional Information",
-  },
 };
