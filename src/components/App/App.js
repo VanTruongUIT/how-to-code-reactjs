@@ -60,13 +60,11 @@ function App() {
       <h1>Animals</h1>
       {data.map((animal) => (
         <AnimalCard
+          diet={animal.diet}
           key={animal.name}
           name={animal.name}
-          additional={animal.additional}
-          diet={animal.diet}
-          scientificName={animal.scientificName}
           size={animal.size}
-          showAdditional={showAdditional}
+          scientificName={animal.scientificName}
         />
       ))}
     </div>
