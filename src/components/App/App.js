@@ -1,9 +1,18 @@
 import React from "react";
-import "./App.css";
+import { createUseStyles } from "react-jss";
 
+// import "./App.css";
 import data from "./data.js";
 import Instructions from "../Instructions/Instructions.js";
 import AnimalCard from "../AnimalCard/AnimalCard";
+import Alert from "../Alert/Alert";
+import CartSuccess from "../CartSuccess/CartSuccess";
+
+const useStyles = createUseStyles({
+  wrapper: {
+    padding: 20,
+  },
+});
 
 function showAdditional(additional) {
   const alertInformation = Object.entries(additional)
@@ -71,4 +80,16 @@ function App() {
   );
 }
 
-export default App;
+function App2() {
+  const classes = useStyles();
+
+  return (
+    <div className={classes.wrapper}>
+      <Alert title="Items Not Added" type="error">
+        <div>Your items are out of stock.</div>
+      </Alert>
+      <CartSuccess />
+    </div>
+  );
+}
+export default App2;
