@@ -7,6 +7,7 @@ import Instructions from "../Instructions/Instructions.js";
 import AnimalCard from "../AnimalCard/AnimalCard";
 import Alert from "../Alert/Alert";
 import CartSuccess from "../CartSuccess/CartSuccess";
+import Product from "../Product/Product.js";
 
 const useStyles = createUseStyles({
   wrapper: {
@@ -92,4 +93,8 @@ function App2() {
     </div>
   );
 }
-export default App2;
+
+function App3() {
+  return <Product />;
+}
+export default App3;
