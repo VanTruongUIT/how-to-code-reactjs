@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState, useReducer } from "react";
 import { createUseStyles } from "react-jss";
 
-// import "./App.css";
+import "./App.css";
 import data from "./data.js";
 import Instructions from "../Instructions/Instructions.js";
 import AnimalCard from "../AnimalCard/AnimalCard";
@@ -97,4 +97,118 @@ function App2() {
 function App3() {
   return <Product />;
 }
-export default App3;
+
+const formReducer = (state, event) => {
+  if (event.reset) {
+    return {
+      apple: "",
+      count: 0,
+      name: "",
+      "gift-wrap": false,
+    };
+  }
+  return {
+    ...state,
+    [event.name]: event.value,
+  };
+};
+
+function App4() {
+  const [formData, setFormData] = useReducer(formReducer, {
+    count: 100,
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setIsSubmitting(true);
+
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setFormData({
+        reset: true,
+      });
+    }, 3000);
+  };
+
+  const handleChange = (event) => {
+    const isCheckBox = event.target.type === "checkbox";
+    setFormData({
+      name: event.target.name,
+      value: isCheckBox ? event.target.checked : event.target.value,
+    });
+  };
+
+  return (
+    <div className="wrapper">
+      <h1>How About Them Apples</h1>
+      {isSubmitting && (
+        <div>
+          You are submitting the following:
+          <ul>
+            {Object.entries(formData).map(([name, value]) => (
+              <li key={name}>
+                <strong>{name}</strong>:{value.toString()}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      <form action="" onSubmit={handleSubmit}>
+        <fieldset disabled={isSubmitting}>
+          <label htmlFor="">
+            <p>Name</p>
+            <input
+              type="text"
+              name="name"
+              onChange={handleChange}
+              value={formData.name || ""}
+            />
+          </label>
+        </fieldset>
+        <fieldset disabled={isSubmitting}>
+          <label htmlFor="">
+            <p>Apples</p>
+            <select
+              name="apple"
+              id="apple"
+              onChange={handleChange}
+              value={formData.apple || ""}
+            >
+              <option value="">--Please choose an option</option>
+              <option value="fuji">Fuji</option>
+              <option value="jonathan">Jonathan</option>
+              <option value="honey-crisp">Honey Crisp</option>
+            </select>
+          </label>
+          <label htmlFor="">
+            <p>Count</p>
+            <input
+              type="number"
+              name="count"
+              id="count"
+              onChange={handleChange}
+              step="1"
+              value={formData.count || ""}
+            />
+          </label>
+          <label htmlFor="">
+            <p>Gift Wrap</p>
+            <input
+              type="checkbox"
+              name="gift-wrap"
+              id="gift-wrap"
+              onChange={handleChange}
+              checked={formData["gift-wrap"] || false}
+              disabled={formData.apple !== "fuji"}
+            />
+          </label>
+        </fieldset>
+        <button type="submit" disabled={isSubmitting}>
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+}
+export default App4;
