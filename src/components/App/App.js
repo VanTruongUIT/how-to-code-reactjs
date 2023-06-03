@@ -99,6 +99,14 @@ function App3() {
 }
 
 const formReducer = (state, event) => {
+  if (event.reset) {
+    return {
+      apple: "",
+      count: 0,
+      name: "",
+      "gift-wrap": false,
+    };
+  }
   return {
     ...state,
     [event.name]: event.value,
@@ -106,17 +114,20 @@ const formReducer = (state, event) => {
 };
 
 function App4() {
-  const [formData, setFormData] = useReducer(formReducer, {});
+  const [formData, setFormData] = useReducer(formReducer, {
+    count: 100,
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     setIsSubmitting(true);
 
-    console.log(formData);
-
     setTimeout(() => {
       setIsSubmitting(false);
+      setFormData({
+        reset: true,
+      });
     }, 3000);
   };
 
@@ -144,16 +155,26 @@ function App4() {
         </div>
       )}
       <form action="" onSubmit={handleSubmit}>
-        <fieldset>
+        <fieldset disabled={isSubmitting}>
           <label htmlFor="">
             <p>Name</p>
-            <input type="text" name="name" onChange={handleChange} />
+            <input
+              type="text"
+              name="name"
+              onChange={handleChange}
+              value={formData.name || ""}
+            />
           </label>
         </fieldset>
-        <fieldset>
+        <fieldset disabled={isSubmitting}>
           <label htmlFor="">
             <p>Apples</p>
-            <select name="apple" id="apple" onChange={handleChange}>
+            <select
+              name="apple"
+              id="apple"
+              onChange={handleChange}
+              value={formData.apple || ""}
+            >
               <option value="">--Please choose an option</option>
               <option value="fuji">Fuji</option>
               <option value="jonathan">Jonathan</option>
@@ -168,6 +189,7 @@ function App4() {
               id="count"
               onChange={handleChange}
               step="1"
+              value={formData.count || ""}
             />
           </label>
           <label htmlFor="">
@@ -177,10 +199,14 @@ function App4() {
               name="gift-wrap"
               id="gift-wrap"
               onChange={handleChange}
+              checked={formData["gift-wrap"] || false}
+              disabled={formData.apple !== "fuji"}
             />
           </label>
         </fieldset>
-        <button type="submit">Submit</button>
+        <button type="submit" disabled={isSubmitting}>
+          Submit
+        </button>
       </form>
     </div>
   );
